@@ -1,6 +1,6 @@
 #include "ItemStack.h"
 
-ItemStack::ItemStack(const std::string& title, const float& cost, const unsigned int& count):
+ItemStack::ItemStack(const std::string& title, const double& cost, const unsigned int& count):
   m_title(title), m_cost(cost), m_count(count)
 {
 
@@ -11,7 +11,7 @@ std::string ItemStack::title () const
   return m_title;
 }
 
-float ItemStack::cost() const
+double ItemStack::cost() const
 {
   return m_cost;
 }
@@ -26,12 +26,12 @@ void ItemStack::setTitle(const std::string& title)
   m_title = title;
 }
     
-void ItemStack::setCost(const float& cost)
+void ItemStack::setCost(const double& cost)
 {
   m_cost = cost;
 }
     
-void ItemStack::setCount(const float& count)
+void ItemStack::setCount(const unsigned int& count)
 {
   m_count = count;
 }
@@ -44,6 +44,7 @@ void ItemStack::retreive()
   else
   {
     std::cerr << __PRETTY_FUNCTION__ << " ERROR stack is empty" << std::endl;
+  }
 }
     
 std::ostream& operator<< (std::ostream& stream, const ItemStack& itemStack)

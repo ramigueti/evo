@@ -25,7 +25,7 @@ void VendingMachine::deleteItemStack(const std::string& grid_position)
   }
 }
 
-void VendingMachine::addMoney(const float& money) const
+void VendingMachine::addMoney(const double& money)
 {
   if (money > 0.0)
   {
@@ -46,7 +46,11 @@ std::shared_ptr<ItemStack> VendingMachine::queryForItem(const std::string& grid_
     auto it = m_item_stacks.find(grid_position);
     if (it!=m_item_stacks.end())
     {
-      item.reset(it->second);
+      item = std::make_shared<ItemStack>(it->second);
+    }
+    else
+    {
+      std::cerr << __PRETTY_FUNCTION__ << " ERROR grid is empty" << std::endl;
     }
   }
   else
@@ -57,7 +61,7 @@ std::shared_ptr<ItemStack> VendingMachine::queryForItem(const std::string& grid_
   return item;
 }
 
-void VendingMachine::retrieveItem(const std::string& grid_postion)
+void VendingMachine::retrieveItem(const std::string& grid_position)
 {
   if(m_money > 0.0)
   {
@@ -72,17 +76,21 @@ void VendingMachine::retrieveItem(const std::string& grid_postion)
           {
             it->second.retreive();
             m_money = m_money - it->second.cost();
-            std::cout << "pick up " << it->second.title() << std::endl;
+            std::cout << "pick up " << it->second.title() << " available money " << m_money<< std::endl;
           }
           else
           {
-            std::cerr << __PRETTY_FUNCTION__ << " ERROR not money for buy this item" << std::endl;
+            std::cerr << __PRETTY_FUNCTION__ << " ERROR not money " << m_money << " for buy this item " << it->second.cost() << std::endl;
           }
         }
         else
         {
-            std::cerr << __PRETTY_FUNCTION__ << " ERROR no stock" << std::endl;
+          std::cerr << __PRETTY_FUNCTION__ << " ERROR no stock" << std::endl;
         }
+      }
+      else
+      {
+        std::cerr << __PRETTY_FUNCTION__ << " ERROR grid is empty" << std::endl;
       }
     }
     else
@@ -96,9 +104,12 @@ void VendingMachine::retrieveItem(const std::string& grid_postion)
   }
 }
 
-float VendingMachine::returnChange()
+double VendingMachine::returnChange()
 {
-  std::cout << "Your change thanks" << std::endl;
-  return m_money;
+  double change = m_money;
+  
+  m_money = 0.0;
+  std::cout << "Your change thanks " << change << " €" << std::endl;
+  return change;
 }
 
