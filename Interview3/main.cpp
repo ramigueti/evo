@@ -14,11 +14,22 @@ int main()
   bt.add(9);
 
   std::cout << "Binary Search Tree: " << std::endl;
-  bt.print();
   std::cout << std::endl; 
   bt.search(5) ? std::cout << "Found 5 in binary search tree " <<std::endl 
   : std::cout << "Not found 5 in binary search tree" <<std::endl;  
   bt.search(3) ? std::cout << "Found 3 in binary search tree " <<std::endl 
-  : std::cout << " Not found 3 in binary search tree" <<std::endl;  
+  : std::cout << "Not found 3 in binary search tree" <<std::endl;  
+  std::cout << "Inorder" << std::endl; 
+  for (auto it = bt.beginInorder(); it != bt.endInorder(); ++it)
+  {
+    std::cout << *it << " ";
+  }  
+  std::cout << std::endl; 
+  std::cout << "Preorder" << std::endl; 
+  for (auto it = bt.beginPreorder(); it != bt.endPreorder(); ++it)
+  {
+    std::cout << *it << " ";
+  }  
+  std::cout << std::endl; 
   return 0;
 }
