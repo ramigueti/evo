@@ -11,6 +11,9 @@ class InorderIterator;
 template <typename T>
 class PreorderIterator;
 
+template <typename T>
+class PostorderIterator;
+
 template<class T>
 struct Node
 {
@@ -141,6 +144,18 @@ class BinarySearchTree
 
       return it;
     }  
+    PostorderIterator<T> beginPostorder()
+    {
+      PostorderIterator<T> it = PostorderIterator<T>(m_root.get());
+
+      return it;
+    }  
+    PostorderIterator<T> endPostorder()
+    {
+      PostorderIterator<T> it = PostorderIterator<T>(nullptr); 
+
+      return it;
+    }  
 };
 
 template <typename T>
@@ -189,23 +204,21 @@ class InorderIterator
 
     InorderIterator operator++(int aux)
     {
-      Node<T>* temp = m_stack.top();
-      Node<T>* node = m_stack.top();
-      m_stack.pop();
-      Node<T>* head = node->m_right.get();
-      leafNode(head);
-      return *temp;
+      InorderIterator temp = *this; 
+      ++(*this); 
+      return temp;
     }
 
   private:
-    std::stack<Node<T>*> m_stack;
     void leafNode(Node<T>* root)
     {
-      while(root){
+      while(nullptr!=root){
         m_stack.push(root);
         root=root->m_left.get();
       }
     }
+
+    std::stack<Node<T>*> m_stack;
 };
 
 template <typename T>
@@ -244,9 +257,9 @@ class PreorderIterator
 
     PreorderIterator operator++(int aux)
     {
-      Node<T>* temp = m_current;
-      next();
-      return *temp;
+      PreorderIterator temp = *this; 
+      ++(*this); 
+      return temp;
     }
 
   private:
@@ -274,4 +287,81 @@ class PreorderIterator
     Node<T>* m_current = nullptr;
 };
 
+template <typename T>
+class PostorderIterator
+{
+  public:
+    using iterator_category = std::forward_iterator_tag;
+    using value_type = Node<T>;
+    using difference_type = Node<T>;
+    using pointer = Node<T>*;
+    using reference = Node<T>&;
+
+    PostorderIterator(Node<T>* root)
+    {
+      fillStack(root); 
+    }
+
+    bool operator!=(PostorderIterator<T> const & other) const
+    {
+      if(m_stack.empty() && other.m_stack.empty())
+      {
+        return false;
+      }
+      else if(m_stack.empty() || other.m_stack.empty())
+      {
+        return true;
+      }
+      else
+      {
+        return m_stack.top() != other.m_stack.top();
+      }
+    }
+
+    T &operator*() const {
+      return m_stack.top()->m_data;
+    }
+
+    PostorderIterator operator++()
+    {
+      Node<T>* node = m_stack.top();
+      m_stack.pop();
+      return *this;
+    }
+
+    PostorderIterator operator++(int aux)
+    {
+      PostorderIterator temp = *this; 
+      ++(*this); 
+      return temp;
+    }
+
+  private:
+    void fillStack(Node<T>* root)
+    {
+      if (nullptr == root)
+      {
+        return;
+      }
+      std::stack<Node<T>*> aux;
+
+      aux.push(root);
+
+      while (!aux.empty()) {
+        auto current = aux.top();
+        m_stack.push(current);
+        aux.pop();
+        if (nullptr != current->m_left)
+        {
+          aux.push(current->m_left.get());
+        }
+        if (nullptr != current->m_right)
+        {
+          aux.push(current->m_right.get());
+        }
+      }
+    }
+
+    std::stack<Node<T>*> m_stack;
+};
 #endif

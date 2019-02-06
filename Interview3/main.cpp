@@ -31,5 +31,12 @@ int main()
     std::cout << *it << " ";
   }  
   std::cout << std::endl; 
+  std::cout << std::endl; 
+  std::cout << "Postorder" << std::endl; 
+  for (auto it = bt.beginPostorder(); it != bt.endPostorder(); ++it)
+  {
+    std::cout << *it << " ";
+  }  
+  std::cout << std::endl; 
   return 0;
 }
