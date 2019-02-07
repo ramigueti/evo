@@ -5,13 +5,13 @@
 #include <iterator>
 #include <stack>
 
-template <typename T>
+template <class T>
 class InorderIterator;
 
-template <typename T>
+template <class T>
 class PreorderIterator;
 
-template <typename T>
+template <class T>
 class PostorderIterator;
 
 template<class T>
@@ -158,17 +158,17 @@ class BinarySearchTree
     }  
 };
 
-template <typename T>
+template <class T>
 class InorderIterator
 {
   public:
     using iterator_category = std::forward_iterator_tag;
-    using value_type = Node<T>;
-    using difference_type = Node<T>;
-    using pointer = Node<T>*;
-    using reference = Node<T>&;
+    using value_type = Node<T>*;
+    using difference_type = Node<T>*;
+    using pointer = Node<T>**;
+    using reference = Node<T>*&;
 
-    InorderIterator(Node<T>* root)
+    InorderIterator(value_type root)
     {
       leafNode(root); 
     }
@@ -195,9 +195,9 @@ class InorderIterator
 
     InorderIterator operator++()
     {
-      Node<T>* node = m_stack.top();
+      value_type node = m_stack.top();
       m_stack.pop();
-      Node<T>* head = node->m_right.get();
+      value_type head = node->m_right.get();
       leafNode(head);
       return *this;
     }
@@ -210,7 +210,7 @@ class InorderIterator
     }
 
   private:
-    void leafNode(Node<T>* root)
+    void leafNode(value_type root)
     {
       while(nullptr!=root){
         m_stack.push(root);
@@ -218,20 +218,20 @@ class InorderIterator
       }
     }
 
-    std::stack<Node<T>*> m_stack;
+    std::stack<value_type> m_stack;
 };
 
-template <typename T>
+template <class T>
 class PreorderIterator
 {
   public:
     using iterator_category = std::forward_iterator_tag;
-    using value_type = Node<T>;
-    using difference_type = Node<T>;
-    using pointer = Node<T>*;
-    using reference = Node<T>&;
+    using value_type = Node<T>*;
+    using difference_type = Node<T>*;
+    using pointer = Node<T>**;
+    using reference = Node<T>*&;
 
-    PreorderIterator(Node<T>* root)
+    PreorderIterator(value_type root)
     {
       if(root)
       {
@@ -283,21 +283,21 @@ class PreorderIterator
       }
     }
 
-    std::stack<Node<T>*> m_stack;
-    Node<T>* m_current = nullptr;
+    std::stack<value_type> m_stack;
+    value_type m_current = nullptr;
 };
 
-template <typename T>
+template <class T>
 class PostorderIterator
 {
   public:
     using iterator_category = std::forward_iterator_tag;
-    using value_type = Node<T>;
-    using difference_type = Node<T>;
-    using pointer = Node<T>*;
-    using reference = Node<T>&;
+    using value_type = Node<T>*;
+    using difference_type = Node<T>*;
+    using pointer = Node<T>**;
+    using reference = Node<T>*&;
 
-    PostorderIterator(Node<T>* root)
+    PostorderIterator(value_type root)
     {
       fillStack(root); 
     }
@@ -324,7 +324,7 @@ class PostorderIterator
 
     PostorderIterator operator++()
     {
-      Node<T>* node = m_stack.top();
+      value_type node = m_stack.top();
       m_stack.pop();
       return *this;
     }
@@ -337,13 +337,13 @@ class PostorderIterator
     }
 
   private:
-    void fillStack(Node<T>* root)
+    void fillStack(value_type root)
     {
       if (nullptr == root)
       {
         return;
       }
-      std::stack<Node<T>*> aux;
+      std::stack<value_type> aux;
 
       aux.push(root);
 
@@ -362,6 +362,6 @@ class PostorderIterator
       }
     }
 
-    std::stack<Node<T>*> m_stack;
+    std::stack<value_type> m_stack;
 };
 #endif
