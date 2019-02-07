@@ -12,7 +12,7 @@ class SocialNetwork
 {
 public:
   SocialNetwork(unsigned int max_users=100);
-  // User is a reference because addUser method setting identifier
+  // User should by a reference because addUser method set identifier
 	void addUser(User& user);
 	void deleteUser(const User& user);
   std::vector<User> searchUserByName(const std::string& name) const;
@@ -25,6 +25,7 @@ private:
   unsigned int next_id();
   void removeFriend(const unsigned int& id_user);
   std::map<unsigned int, User> m_users;
+  //This set is necessary for generate unique ids for users
   std::set<unsigned int> m_free_ids;  
 };
 

@@ -20,6 +20,7 @@ public:
 private:
   std::map<std::string, ItemStack> m_item_stacks;
   double m_money = 0.0;  
+  //regular expression to validate row and column
   const std::regex m_grid_regex = std::regex("[A-Z][0-1]?[0-9]");
 };
 
